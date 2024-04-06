@@ -68,9 +68,7 @@ export const calcKimariji = async () => {
   const altNames = (await getAltnameTable()).altNameTable;
 
   // 辞書順にソート
-  const sortedLoweredStamps = stamps
-    .map((stamp) => stamp.toLowerCase())
-    .sort((a, b) => a.localeCompare(b));
+  const sortedStamps = stamps.sort((a, b) => a.localeCompare(b));
 
   const searchResult = new Map<
     string,
@@ -125,7 +123,7 @@ export const calcKimariji = async () => {
   }
 
   // すべてのスタンプについて、そのスタンプに含まれる部分文字列でマークする
-  for (const stamp of sortedLoweredStamps) {
+  for (const stamp of sortedStamps) {
     for (const substring of getContinuousSubstrings(stamp.toLowerCase())) {
       mark(substring, stamp, false, stamp);
     }
