@@ -1,0 +1,19 @@
+{
+  "name": "shortest-stamp-name",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts",
+    "check": "biome check .",
+    "check:fix": "biome check --apply ."
+  },
+  "dependencies": {
+    "@elysiajs/swagger": "^1.0.3",
+    "elysia": "latest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.6.4",
+    "bun-types": "latest"
+  },
+  "module": "src/index.js"
+}
