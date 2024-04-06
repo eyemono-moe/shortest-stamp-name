@@ -9,6 +9,11 @@ const app = new Elysia()
         info: {
           title: "Stamp Kimariji API",
           version: "0.0.1",
+          contact: {
+            name: "eyemono.moe",
+            url: "https://eyemono.moe",
+          },
+          description: "API for traQ Stamp Kimariji. spec: /swagger/json",
         },
       },
     }),
