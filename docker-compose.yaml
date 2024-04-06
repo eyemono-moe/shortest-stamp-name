@@ -1,0 +1,7 @@
+services:
+  app:
+    image: "oven/bun"
+    command: "/bin/sh -c 'bun install && bun run --watch src/index.ts'"
+    ports: ["3000:3000"]
+    volumes: ["./:/home/bun/app"]
+    working_dir: "/home/bun/app"
