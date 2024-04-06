@@ -18,6 +18,9 @@ const app = new Elysia()
       },
     }),
   )
+  .onBeforeHandle(({ set }) => {
+    set.headers["Access-Control-Allow-Origin"] = "*";
+  })
   .use(controllers)
   .listen(3000);
 
