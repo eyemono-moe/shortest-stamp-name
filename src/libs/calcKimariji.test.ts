@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { calcKimariji, type Kimariji } from "./calcKimariji";
+import { type Kimariji, calcKimariji } from "./calcKimariji";
 
 const sortKimariji = (kimarijis: Kimariji[]) =>
   kimarijis
@@ -53,6 +53,32 @@ describe("calcKimariji", () => {
       { name: "appEaraNce", kimariji: ["ra", "an", "nc", "ce"] },
       { name: "aPple", kimariji: ["pl", "le"] },
       { name: "appLy", kimariji: ["ly"] },
+    ];
+    const result = calcKimariji(stamps, altNames);
+    return expect(sortKimariji(result)).toEqual(sortKimariji(expected));
+  });
+
+  test("case 3: altNames", () => {
+    const stamps = [
+      "app",
+      "apparel",
+      "appeal",
+      "appear",
+      "appearance",
+      "apple",
+      "apply",
+    ];
+    const altNames = {
+      bad_apple: "apple",
+    };
+    const expected: Kimariji[] = [
+      { name: "app", kimariji: ["ap", "pp"] },
+      { name: "apparel", kimariji: ["pa", "ar", "re", "el"] },
+      { name: "appeal", kimariji: ["pe", "ea", "al"] },
+      { name: "appear", kimariji: ["ear"] },
+      { name: "appearance", kimariji: ["ra", "an", "nc", "ce"] },
+      { name: "apple", kimariji: ["pl", "le", "ba", "ad", "d_", "_a"] },
+      { name: "apply", kimariji: ["ly"] },
     ];
     const result = calcKimariji(stamps, altNames);
     return expect(sortKimariji(result)).toEqual(sortKimariji(expected));
