@@ -94,6 +94,16 @@ export const calcKimariji = (
 
   // すべての別名について、その別名に含まれる部分文字列でマークする
   for (const [altName, stamp] of Object.entries(altNames)) {
+    if (altName.length === 1) {
+      // 一字の時は確定
+      searchResult.set(altName.toLowerCase(), {
+        name: stamp,
+        priority: 0,
+        isAltName: true,
+      });
+      continue;
+    }
+
     for (const substring of getContinuousSubstrings(altName.toLowerCase())) {
       mark(substring, stamp, true, altName);
     }
@@ -101,6 +111,15 @@ export const calcKimariji = (
 
   // すべてのスタンプについて、そのスタンプに含まれる部分文字列でマークする
   for (const stamp of sortedStamps) {
+    if (stamp.length === 1) {
+      // 一字の時は確定
+      searchResult.set(stamp.toLowerCase(), {
+        name: stamp,
+        priority: 0,
+        isAltName: false,
+      });
+      continue;
+    }
     for (const substring of getContinuousSubstrings(stamp.toLowerCase())) {
       mark(substring, stamp, false, stamp);
     }

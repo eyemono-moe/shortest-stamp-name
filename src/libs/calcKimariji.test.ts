@@ -12,6 +12,7 @@ const sortKimariji = (kimarijis: Kimariji[]) =>
 describe("calcKimariji", () => {
   test("case 1", () => {
     const stamps = [
+      "a",
       "app",
       "apparel",
       "appeal",
@@ -22,6 +23,7 @@ describe("calcKimariji", () => {
     ];
     const altNames = {};
     const expected: Kimariji[] = [
+      { name: "a", kimariji: ["a"] },
       { name: "app", kimariji: ["ap", "pp"] },
       { name: "apparel", kimariji: ["pa", "ar", "re", "el"] },
       { name: "appeal", kimariji: ["pe", "ea", "al"] },
@@ -36,6 +38,7 @@ describe("calcKimariji", () => {
 
   test("case 2: Upper case (should be case insensitive)", () => {
     const stamps = [
+      "A",
       "App",
       "aPparel",
       "appeal",
@@ -46,6 +49,7 @@ describe("calcKimariji", () => {
     ];
     const altNames = {};
     const expected: Kimariji[] = [
+      { name: "A", kimariji: ["a"] },
       { name: "App", kimariji: ["ap", "pp"] },
       { name: "aPparel", kimariji: ["pa", "ar", "re", "el"] },
       { name: "appeal", kimariji: ["pe", "ea", "al"] },
@@ -69,6 +73,7 @@ describe("calcKimariji", () => {
       "apply",
     ];
     const altNames = {
+      a: "apply",
       bad_apple: "apple",
     };
     const expected: Kimariji[] = [
@@ -78,7 +83,7 @@ describe("calcKimariji", () => {
       { name: "appear", kimariji: ["ear"] },
       { name: "appearance", kimariji: ["ra", "an", "nc", "ce"] },
       { name: "apple", kimariji: ["pl", "le", "ba", "ad", "d_", "_a"] },
-      { name: "apply", kimariji: ["ly"] },
+      { name: "apply", kimariji: ["a"] },
     ];
     const result = calcKimariji(stamps, altNames);
     return expect(sortKimariji(result)).toEqual(sortKimariji(expected));
