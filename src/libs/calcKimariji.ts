@@ -14,23 +14,36 @@ const getContinuousSubstrings = (str: string) => {
   return substrings;
 };
 
+export type Kimariji = {
+  name: string;
+  kimariji: string[];
+};
+
+/**
+ * スタンプ名とクエリから優先度を計算する
+ *
+ * @param query クエリ(小文字)
+ * @param targetName スタンプ名
+ * @returns 優先度
+ */
 const calcPriority = (query: string, targetName: string) => {
-  if (query === targetName) {
+  const lowerTargetName = targetName.toLowerCase();
+  if (query === lowerTargetName) {
     return 0;
   }
-  if (targetName.startsWith(query)) {
+  if (lowerTargetName.startsWith(query)) {
     return 1;
   }
-  if (targetName.includes(query)) {
+  if (lowerTargetName.includes(query)) {
     return 2;
   }
   return 100;
 };
 
-export const calcKimariji = async (
+export const calcKimariji = (
   stamps: string[],
   altNames: Record<string, string>,
-) => {
+): Kimariji[] => {
   // 辞書順にソート
   const sortedStamps = stamps.sort((a, b) => a.localeCompare(b));
 
@@ -48,14 +61,14 @@ export const calcKimariji = async (
    * 与えられたクエリで検索した時最初にヒットするスタンプをマークする
    *
    * @param query クエリ
-   * @param name スタンプ名
+   * @param stamp スタンプ名
    * @param isAltName スタンプが別名かどうか
    * @param nameForCalcPriority 優先度計算用のスタンプ名
    * @returns マークが成功したかどうか
    */
   const mark = (
     query: string,
-    name: string,
+    stamp: string,
     isAltName: boolean,
     nameForCalcPriority: string,
   ) => {
@@ -72,7 +85,7 @@ export const calcKimariji = async (
       (res.priority === priority && res.isAltName && !isAltName) // すでに検索結果があるが、優先度が同じでかつ別名でないものが優先される
     ) {
       searchResult.set(query, {
-        name: name,
+        name: stamp,
         priority,
         isAltName,
       });

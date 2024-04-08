@@ -68,7 +68,7 @@ class KimarijiCache {
       getAltnameTable(),
     ]);
 
-    this.cache = await calcKimariji(stamps, altNames);
+    this.cache = calcKimariji(stamps, altNames);
     this.lastUpdatedUTCString = new Date().toUTCString();
   }
 }
