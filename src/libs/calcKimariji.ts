@@ -85,7 +85,7 @@ export const calcKimariji = async () => {
   >();
 
   /**
-   * 与えられてクエリで検索した時最初にヒットするスタンプをマークする
+   * 与えられたクエリで検索した時最初にヒットするスタンプをマークする
    *
    * @param query クエリ
    * @param name スタンプ名
