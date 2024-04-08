@@ -2,7 +2,7 @@ import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import { controllers } from "./controllers";
 
-const app = new Elysia()
+export const app = new Elysia()
   .use(
     swagger({
       documentation: {
