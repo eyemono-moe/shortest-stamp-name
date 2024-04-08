@@ -9,6 +9,7 @@
     "check:fix": "biome check --apply ."
   },
   "dependencies": {
+    "@elysiajs/html": "^1.0.2",
     "@elysiajs/swagger": "^1.0.3",
     "elysia": "latest"
   },
