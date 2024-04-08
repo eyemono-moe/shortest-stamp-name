@@ -1,38 +1,4 @@
 /**
- * スタンプの別名テーブルを取得
- */
-const getAltnameTable = () =>
-  fetch(
-    "https://raw.githubusercontent.com/traPtitech/traQ_S-UI/master/src/assets/emoji_altname_table.json",
-  )
-    .then(
-      (response) =>
-        response.json() as Promise<{
-          altNameTable: Record<string, string>;
-        }>,
-    )
-    .then((data) => data.altNameTable);
-
-/**
- * スタンプ一覧を取得(unicode, traPオリジナルすべて)
- */
-const getStamps = (token: string) =>
-  fetch("https://q.trap.jp/api/v3/stamps", {
-    headers: {
-      authorization: `Bearer ${token}`,
-    },
-  })
-    .then(
-      (res) =>
-        res.json() as Promise<
-          {
-            name: string;
-          }[]
-        >,
-    )
-    .then((stamps) => stamps.map((stamp) => stamp.name));
-
-/**
  * 連続する部分文字列を取得する
  *
  * @param str 文字列
@@ -61,16 +27,10 @@ const calcPriority = (query: string, targetName: string) => {
   return 100;
 };
 
-export const calcKimariji = async () => {
-  const TOKEN = process.env.BOT_ACCESS_TOKEN;
-  if (TOKEN === undefined) {
-    throw new Error("TOKEN is not defined");
-  }
-  const [stamps, altNames] = await Promise.all([
-    getStamps(TOKEN),
-    getAltnameTable(),
-  ]);
-
+export const calcKimariji = async (
+  stamps: string[],
+  altNames: Record<string, string>,
+) => {
   // 辞書順にソート
   const sortedStamps = stamps.sort((a, b) => a.localeCompare(b));
 
