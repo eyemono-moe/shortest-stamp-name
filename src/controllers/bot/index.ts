@@ -5,7 +5,7 @@ export const bot = new Elysia({ prefix: "/bot" }).use(kimarijiCache).post(
   "/",
   async ({ headers, error, cache }) => {
     if (headers["x-traq-bot-token"] !== process.env.VERIFICATION_TOKEN) {
-      error(400, "Bad Request");
+      return error(400, "Bad Request");
     }
     switch (headers["x-traq-bot-event"]) {
       case "PING":
@@ -17,7 +17,7 @@ export const bot = new Elysia({ prefix: "/bot" }).use(kimarijiCache).post(
       }
       default:
         // 未対応のイベント
-        return new Response(null, { status: 204 });
+        return error(501, "Not Implemented");
     }
   },
   {
