@@ -17,6 +17,9 @@ describe("Elysia", () => {
             "x-traq-bot-token": "invalid",
             "x-traq-bot-request-id": "test",
           },
+          body: JSON.stringify({
+            eventTime: new Date().toISOString(),
+          }),
         }),
       );
 
@@ -32,6 +35,9 @@ describe("Elysia", () => {
             "x-traq-bot-token": VERIFICATION_TOKEN,
             "x-traq-bot-request-id": "test",
           },
+          body: JSON.stringify({
+            eventTime: new Date().toISOString(),
+          }),
         }),
       );
 
@@ -47,6 +53,19 @@ describe("Elysia", () => {
             "x-traq-bot-token": VERIFICATION_TOKEN,
             "x-traq-bot-request-id": "test",
           },
+          body: JSON.stringify({
+            eventTime: new Date().toISOString(),
+            id: "2bc06cda-bdb9-4a68-8000-62f907f36a92",
+            name: "naruhodo",
+            fileId: "2bc06cda-bdb9-4a68-8000-62f907f36a92",
+            creator: {
+              id: "dfdff0c9-5de0-46ee-9721-2525e8bb3d45",
+              name: "takashi_trap",
+              displayName: "",
+              iconId: "2bc06cda-bdb9-4a68-8000-62f907f36a92",
+              bot: false,
+            },
+          }),
         }),
       );
 
