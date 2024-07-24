@@ -4,6 +4,7 @@ import { kimarijiCache } from "../../cache";
 export const bot = new Elysia({ prefix: "/bot" }).use(kimarijiCache).post(
   "/",
   async ({ headers, error, cache }) => {
+    console.log(JSON.stringify(headers, null, 2), "\n");
     if (headers["x-traq-bot-token"] !== process.env.VERIFICATION_TOKEN) {
       return error(400, "Bad Request");
     }
@@ -26,6 +27,7 @@ export const bot = new Elysia({ prefix: "/bot" }).use(kimarijiCache).post(
         "x-traq-bot-event": t.Union([
           t.Literal("PING"),
           t.Literal("STAMP_CREATED"),
+          t.String(),
         ]),
         "x-traq-bot-token": t.String(),
         "x-traq-bot-request-id": t.String(),
