@@ -1,6 +1,7 @@
 import { html as EHtml } from "@elysiajs/html";
 import Elysia from "elysia";
 import { kimarijiCache } from "../../cache";
+import { sortedKimariji } from "../../libs/calcKimariji";
 
 export const html = new Elysia()
   .use(EHtml())
@@ -31,7 +32,7 @@ export const html = new Elysia()
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
+              {sortedKimariji(rows).map((row) => (
                 <tr>
                   <td>
                     <code>{row.name}</code>

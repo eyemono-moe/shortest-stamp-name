@@ -1,13 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { type Kimariji, calcKimariji } from "./calcKimariji";
-
-const sortKimariji = (kimarijis: Kimariji[]) =>
-  kimarijis
-    .map((kimariji) => ({
-      name: kimariji.name,
-      kimariji: kimariji.kimariji.sort(),
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+import { type KimarijiMap, calcKimariji, sortedKimariji } from "./calcKimariji";
 
 describe("calcKimariji", () => {
   test("case 1", () => {
@@ -22,18 +14,18 @@ describe("calcKimariji", () => {
       "apply",
     ];
     const altNames = {};
-    const expected: Kimariji[] = [
-      { name: "a", kimariji: ["a"] },
-      { name: "app", kimariji: ["ap", "pp"] },
-      { name: "apparel", kimariji: ["pa", "ar", "re", "el"] },
-      { name: "appeal", kimariji: ["pe", "ea", "al"] },
-      { name: "appear", kimariji: ["ear"] },
-      { name: "appearance", kimariji: ["ra", "an", "nc", "ce"] },
-      { name: "apple", kimariji: ["pl", "le"] },
-      { name: "apply", kimariji: ["ly"] },
-    ];
+    const expected: KimarijiMap = new Map([
+      ["a", new Set(["a"])],
+      ["app", new Set(["ap", "pp"])],
+      ["apparel", new Set(["pa", "ar", "re", "el"])],
+      ["appeal", new Set(["pe", "ea", "al"])],
+      ["appear", new Set(["ear"])],
+      ["appearance", new Set(["ra", "an", "nc", "ce"])],
+      ["apple", new Set(["pl", "le"])],
+      ["apply", new Set(["ly"])],
+    ]);
     const result = calcKimariji(stamps, altNames);
-    return expect(sortKimariji(result)).toEqual(sortKimariji(expected));
+    return expect(sortedKimariji(result)).toEqual(sortedKimariji(expected));
   });
 
   test("case 2: Upper case (should be case insensitive)", () => {
@@ -48,18 +40,18 @@ describe("calcKimariji", () => {
       "appLy",
     ];
     const altNames = {};
-    const expected: Kimariji[] = [
-      { name: "A", kimariji: ["a"] },
-      { name: "App", kimariji: ["ap", "pp"] },
-      { name: "aPparel", kimariji: ["pa", "ar", "re", "el"] },
-      { name: "appeal", kimariji: ["pe", "ea", "al"] },
-      { name: "Appear", kimariji: ["ear"] },
-      { name: "appEaraNce", kimariji: ["ra", "an", "nc", "ce"] },
-      { name: "aPple", kimariji: ["pl", "le"] },
-      { name: "appLy", kimariji: ["ly"] },
-    ];
+    const expected: KimarijiMap = new Map([
+      ["A", new Set(["a"])],
+      ["App", new Set(["ap", "pp"])],
+      ["aPparel", new Set(["pa", "ar", "re", "el"])],
+      ["appeal", new Set(["pe", "ea", "al"])],
+      ["Appear", new Set(["ear"])],
+      ["appEaraNce", new Set(["ra", "an", "nc", "ce"])],
+      ["aPple", new Set(["pl", "le"])],
+      ["appLy", new Set(["ly"])],
+    ]);
     const result = calcKimariji(stamps, altNames);
-    return expect(sortKimariji(result)).toEqual(sortKimariji(expected));
+    return expect(sortedKimariji(result)).toEqual(sortedKimariji(expected));
   });
 
   test("case 3: altNames", () => {
@@ -76,16 +68,16 @@ describe("calcKimariji", () => {
       a: "apply",
       bad_apple: "apple",
     };
-    const expected: Kimariji[] = [
-      { name: "app", kimariji: ["ap", "pp"] },
-      { name: "apparel", kimariji: ["pa", "ar", "re", "el"] },
-      { name: "appeal", kimariji: ["pe", "ea", "al"] },
-      { name: "appear", kimariji: ["ear"] },
-      { name: "appearance", kimariji: ["ra", "an", "nc", "ce"] },
-      { name: "apple", kimariji: ["pl", "le", "ba", "ad", "d_", "_a"] },
-      { name: "apply", kimariji: ["a"] },
-    ];
+    const expected: KimarijiMap = new Map([
+      ["app", new Set(["ap", "pp"])],
+      ["apparel", new Set(["pa", "ar", "re", "el"])],
+      ["appeal", new Set(["pe", "ea", "al"])],
+      ["appear", new Set(["ear"])],
+      ["appearance", new Set(["ra", "an", "nc", "ce"])],
+      ["apple", new Set(["pl", "le", "ba", "ad", "d_", "_a"])],
+      ["apply", new Set(["a"])],
+    ]);
     const result = calcKimariji(stamps, altNames);
-    return expect(sortKimariji(result)).toEqual(sortKimariji(expected));
+    return expect(sortedKimariji(result)).toEqual(sortedKimariji(expected));
   });
 });

@@ -1,5 +1,6 @@
 import Elysia from "elysia";
 import { kimarijiCache } from "../../cache";
+import { sortedKimariji } from "../../libs/calcKimariji";
 
 export const kimariji = new Elysia({ prefix: "/kimariji" })
   .use(kimarijiCache)
@@ -13,7 +14,7 @@ export const kimariji = new Elysia({ prefix: "/kimariji" })
         }
       }
       set.headers["Last-Modified"] = lastUpdated;
-      return cachedKimariji;
+      return sortedKimariji(cachedKimariji);
     },
     {
       detail: {

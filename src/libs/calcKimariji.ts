@@ -14,10 +14,7 @@ const getContinuousSubstrings = (str: string) => {
   return substrings;
 };
 
-export type Kimariji = {
-  name: string;
-  kimariji: string[];
-};
+export type KimarijiMap = Map<string, Set<string>>;
 
 /**
  * スタンプ名とクエリから優先度を計算する
@@ -43,7 +40,7 @@ const calcPriority = (query: string, targetName: string) => {
 export const calcKimariji = (
   stamps: string[],
   altNames: Record<string, string>,
-): Kimariji[] => {
+): KimarijiMap => {
   // 辞書順にソート
   const sortedStamps = stamps.sort((a, b) => a.localeCompare(b));
 
@@ -131,15 +128,22 @@ export const calcKimariji = (
     ([, result]) => result?.name ?? "unknown",
   );
 
-  const result = Object.entries(groupedSearchResult).map(([name, results]) => {
-    const querys = results?.map(([query]) => query) ?? [];
-    // 長さ最小のクエリを選択(複数あればすべて)
-    const minLen = Math.min(...querys.map((query) => query.length));
-    return {
-      name,
-      kimariji: querys.filter((query) => query.length === minLen),
-    };
-  });
+  const result = new Map(
+    Object.entries(groupedSearchResult).map(([name, results]) => {
+      const querys = results?.map(([query]) => query) ?? [];
+      // 長さ最小のクエリを選択(複数あればすべて)
+      const minLen = Math.min(...querys.map((query) => query.length));
+      return [name, new Set(querys.filter((query) => query.length === minLen))];
+    }),
+  );
 
   return result;
 };
+
+export const sortedKimariji = (kimarijis: KimarijiMap) =>
+  [...kimarijis.entries()]
+    .map((kimariji) => ({
+      name: kimariji[0],
+      kimariji: [...kimariji[1].values()].sort((a, b) => a.localeCompare(b)),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
