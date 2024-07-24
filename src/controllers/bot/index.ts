@@ -10,9 +10,8 @@ export const bot = new Elysia({ prefix: "/bot" })
   .post(
     "/",
     async ({ headers, error, cache, client, body }) => {
-      console.log(JSON.stringify(headers, null, 2), "\n");
       if (headers["x-traq-bot-token"] !== process.env.VERIFICATION_TOKEN) {
-        return error(400, "Bad Request");
+        return error(400, "Bad Request (unmatched x-traq-bot-token)");
       }
       switch (headers["x-traq-bot-event"]) {
         case "PING":
