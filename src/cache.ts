@@ -70,6 +70,7 @@ class KimarijiCache {
 
     this.cache = calcKimariji(stamps, altNames);
     this.lastUpdatedUTCString = new Date().toUTCString();
+    console.log("Cache updated", this.lastUpdatedUTCString);
   }
 }
 
