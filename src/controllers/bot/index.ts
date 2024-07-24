@@ -55,9 +55,20 @@ export const bot = new Elysia({ prefix: "/bot" })
               )
               .join("\n");
 
-            client.channels.postMessage(message.output.message.channelId, {
-              content: responseMessage,
-            });
+            switch (headers["x-traq-bot-event"]) {
+              case "MESSAGE_CREATED": {
+                client.channels.postMessage(message.output.message.channelId, {
+                  content: responseMessage,
+                });
+                break;
+              }
+              case "DIRECT_MESSAGE_CREATED": {
+                client.users.postDirectMessage(message.output.message.user.id, {
+                  content: responseMessage,
+                });
+                break;
+              }
+            }
           }
 
           return new Response(null, { status: 204 });
