@@ -21,13 +21,18 @@ export const embedChannelSchema = v.object({
 
 const embedSchema = v.union([embedUserSchema, embedChannelSchema]);
 
-export const messageSchema = v.object({
+const messageSchema = v.object({
   id: v.pipe(v.string(), v.uuid()),
   user: userSchema,
   channelId: v.pipe(v.string(), v.uuid()),
   text: v.string(),
   plainText: v.string(),
   embedded: v.array(embedSchema),
-  createdAt: v.pipe(v.string(), v.isoDateTime()),
-  updatedAt: v.pipe(v.string(), v.isoDateTime()),
+  createdAt: v.pipe(v.string(), v.isoTimestamp()),
+  updatedAt: v.pipe(v.string(), v.isoTimestamp()),
+});
+
+export const bodySchema = v.object({
+  eventTime: v.pipe(v.string(), v.isoTimestamp()),
+  message: messageSchema,
 });

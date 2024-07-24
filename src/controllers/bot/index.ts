@@ -1,7 +1,7 @@
 import Elysia, { t } from "elysia";
 import { safeParse } from "valibot";
 import { kimarijiCache } from "../../cache";
-import { messageSchema } from "../../libs/traq/event";
+import { bodySchema } from "../../libs/traq/event";
 import { traqApi } from "../../libs/traqApi";
 
 export const bot = new Elysia({ prefix: "/bot" })
@@ -25,34 +25,41 @@ export const bot = new Elysia({ prefix: "/bot" })
         case "DIRECT_MESSAGE_CREATED":
         case "MENTION_MESSAGE_CREATED": {
           // メッセージが送られたら対応するスタンプの決まり字を返信する
-          const message = safeParse(messageSchema, body);
+          const message = safeParse(bodySchema, body);
 
           if (!message.success) {
             console.log("message parse failed: ", message.issues);
             return error(501, "Internal error");
           }
 
+          // botなら何もしない
+          if (message.output.message.user.bot) {
+            return new Response(null, { status: 204 });
+          }
+
           const targetStamps = [
-            ...message.output.plainText.matchAll(
+            ...message.output.message.plainText.matchAll(
               /:([a-zA-Z0-9_-]+)(?:\..+)*:/g,
             ),
           ].map((match) => match[1]);
 
-          const kimarijiCache = await cache.get();
-          const responseMessage = targetStamps
-            .map((s) => [s, kimarijiCache.cache.get(s)] as const)
-            .filter((k): k is [string, Set<string>] => k[1] !== undefined)
-            .map(
-              (k) =>
-                `- :${k[0]}: \`${k[0]}\`: ${[...k[1].values()]
-                  .map((kimariji) => `\`${kimariji}\``)
-                  .join(", ")}`,
-            )
-            .join("\n");
+          if (targetStamps.length > 0) {
+            const kimarijiCache = await cache.get();
+            const responseMessage = targetStamps
+              .map((s) => [s, kimarijiCache.cache.get(s)] as const)
+              .filter((k): k is [string, Set<string>] => k[1] !== undefined)
+              .map(
+                (k) =>
+                  `- :${k[0]}: \`${k[0]}\`: ${[...k[1].values()]
+                    .map((kimariji) => `\`${kimariji}\``)
+                    .join(", ")}`,
+              )
+              .join("\n");
 
-          client.channels.postMessage(message.output.channelId, {
-            content: responseMessage,
-          });
+            client.channels.postMessage(message.output.message.channelId, {
+              content: responseMessage,
+            });
+          }
 
           return new Response(null, { status: 204 });
         }
@@ -77,6 +84,7 @@ export const bot = new Elysia({ prefix: "/bot" })
           additionalProperties: true,
         },
       ),
+      type: "application/json",
       detail: {
         description: "bot用イベントエンドポイント",
       },

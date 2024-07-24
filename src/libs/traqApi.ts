@@ -8,7 +8,7 @@ const createApiClient = () => {
   }
   return new Api({
     baseApiParams: {
-      headers: { Authorization: `Bearer ${process.env.TOKEN}` },
+      headers: { Authorization: `Bearer ${TOKEN}` },
     },
   });
 };

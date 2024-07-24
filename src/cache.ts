@@ -1,5 +1,6 @@
 import Elysia from "elysia";
 import { calcKimariji } from "./libs/calcKimariji";
+import { Api } from "./libs/traq/api";
 
 /**
  * スタンプの別名テーブルを取得
@@ -19,21 +20,14 @@ const getAltnameTable = () =>
 /**
  * スタンプ一覧を取得(unicode, traPオリジナルすべて)
  */
-const getStamps = (token: string) =>
-  fetch("https://q.trap.jp/api/v3/stamps", {
-    headers: {
-      authorization: `Bearer ${token}`,
+const getStamps = (token: string) => {
+  const api = new Api({
+    baseApiParams: {
+      headers: { Authorization: `Bearer ${token}` },
     },
-  })
-    .then(
-      (res) =>
-        res.json() as Promise<
-          {
-            name: string;
-          }[]
-        >,
-    )
-    .then((stamps) => stamps.map((stamp) => stamp.name));
+  });
+  return api.stamps.getStamps().then((r) => r.data.map((s) => s.name));
+};
 
 class KimarijiCache {
   private cache: Awaited<ReturnType<typeof calcKimariji>> | null = null;
