@@ -22,7 +22,7 @@ export const bot = new Elysia({ prefix: "/bot" })
           return new Response(null, { status: 204 });
         }
         case "DIRECT_MESSAGE_CREATED":
-        case "MENTION_MESSAGE_CREATED": {
+        case "MESSAGE_CREATED": {
           // メッセージが送られたら対応するスタンプの決まり字を返信する
           const message = safeParse(bodySchema, body);
 
@@ -74,7 +74,7 @@ export const bot = new Elysia({ prefix: "/bot" })
             t.Literal("PING"),
             t.Literal("STAMP_CREATED"),
             t.Literal("DIRECT_MESSAGE_CREATED"),
-            t.Literal("MENTION_MESSAGE_CREATED"),
+            t.Literal("MESSAGE_CREATED"),
           ]),
           "x-traq-bot-token": t.String(),
           "x-traq-bot-request-id": t.String(),
