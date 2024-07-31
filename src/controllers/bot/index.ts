@@ -1,6 +1,6 @@
 import Elysia, { t } from "elysia";
 import { safeParse } from "valibot";
-import { kimarijiCache } from "../../cache";
+import { kimarijiCache } from "../../kimarijiCache";
 import { bodySchema } from "../../libs/traq/event";
 import { traqApi } from "../../libs/traqApi";
 

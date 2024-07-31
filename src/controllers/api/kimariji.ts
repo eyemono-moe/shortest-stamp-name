@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { kimarijiCache } from "../../cache";
+import { kimarijiCache } from "../../kimarijiCache";
 import { sortedKimariji } from "../../libs/calcKimariji";
 
 export const kimariji = new Elysia({ prefix: "/kimariji" })
